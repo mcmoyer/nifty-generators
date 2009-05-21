@@ -15,14 +15,27 @@ else
   RAILS_ROOT = app_root
 end
 
+unless File.exists? RAILS_ROOT
+ require 'fileutils'
+ FileUtils.mkdir_p( RAILS_ROOT)
+end
+
 require 'rubygems'
-gem 'rails', '2.0.2' # getting a Rails.configuration error with 2.1
+require 'initializer'
+
+module Rails
+ def self.configuration
+   Rails::Configuration.new
+ end
+end
+
+require 'rails_generator'
 require 'rubigen'  # gem install rubigen
 require 'rubigen/helpers/generator_test_helper'
-require 'rails_generator'
+
 require 'shoulda' # gem install Shoulda
 require 'mocha'
-
+require 'activerecord'
 module NiftyGenerators
   module TestHelper
     include RubiGen::GeneratorTestHelper
