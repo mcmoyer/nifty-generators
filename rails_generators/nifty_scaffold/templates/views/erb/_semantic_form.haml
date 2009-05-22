@@ -1,0 +1,8 @@
+<%% semantic_form_for @<%= singular_name %> do |f| %>
+<%- for attribute in attributes -%>
+  <p>
+    <%%= f.inputs :<%= attribute.name %> %>
+  </p>
+<%- end -%>
+  <p><%%= f.submit "Submit" %></p>
+<%% end %>

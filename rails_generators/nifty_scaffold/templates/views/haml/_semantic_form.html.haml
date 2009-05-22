@@ -1,0 +1,8 @@
+- semantic_form_for @<%= singular_name %> do |form|
+  - form.inputs do
+    <%- for attribute in attributes -%>
+    %p
+    = form.input :<%= attribute.name %>
+    <%- end -%>
+  - form.buttons do
+    %p= form.commit_button

@@ -77,7 +77,7 @@ class NiftyScaffoldGenerator < Rails::Generator::Base
         end
       
         if form_partial?
-          m.template "views/#{view_language}/_form.html.#{view_language}", "app/views/#{plural_name}/_form.html.#{view_language}"
+          m.template "views/#{view_language}/_#{form_partial_name}.html.#{view_language}", "app/views/#{plural_name}/_#{form_partial_name}.html.#{view_language}"
         end
       
         m.route_resources plural_name
@@ -130,16 +130,22 @@ class NiftyScaffoldGenerator < Rails::Generator::Base
       read_template("#{dir_name}/#{action}.rb")
     end.join("  \n").strip
   end
-  
+  def form_partial_name
+    if options[:formtastic]
+      'semantic_form'
+    else
+      'form'
+    end
+  end
   def render_form
     if form_partial?
       if options[:haml]
-        "= render :partial => 'form'"
+        "= render :partial => '#{form_partial_name}'"
       else
-        "<%= render :partial => 'form' %>"
+        "<%= render :partial => '#{form_partial_name}' %>"
       end
     else
-      read_template("views/#{view_language}/_form.html.#{view_language}")
+      read_template("views/#{view_language}/_#{form_partial_name}.html.#{view_language}")
     end
   end
   
@@ -208,6 +214,7 @@ protected
     opt.on("--skip-controller", "Don't generate controller, helper, or views.") { |v| options[:skip_controller] = v }
     opt.on("--invert", "Generate all controller actions except these mentioned.") { |v| options[:invert] = v }
     opt.on("--haml", "Generate HAML views instead of ERB.") { |v| options[:haml] = v }
+    opt.on("--formtastic", "Generate formtastic forms instead of normal forms.") { |v| options[:formtastic] = v }
     opt.on("--testunit", "Use test/unit for test files.") { options[:test_framework] = :testunit }
     opt.on("--rspec", "Use RSpec for test files.") { options[:test_framework] = :rspec }
     opt.on("--shoulda", "Use Shoulda for test files.") { options[:test_framework] = :shoulda }
