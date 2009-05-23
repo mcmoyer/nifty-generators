@@ -64,7 +64,7 @@ class NiftyScaffoldGenerator < Rails::Generator::Base
       
       unless options[:skip_controller]
         m.directory "app/controllers"
-        m.template "controller.rb", "app/controllers/#{plural_name}_controller.rb"
+        m.template "#{resource_controller_prefix}controller.rb", "app/controllers/#{plural_name}_controller.rb"
         
         m.directory "app/helpers"
         m.template "helper.rb", "app/helpers/#{plural_name}_helper.rb"
@@ -92,7 +92,9 @@ class NiftyScaffoldGenerator < Rails::Generator::Base
       end
     end
   end
-  
+  def resource_controller_prefix
+    "resource_" if options[:resource_controller]
+  end
   def form_partial?
     actions? :new, :edit
   end
@@ -218,6 +220,7 @@ protected
     opt.on("--testunit", "Use test/unit for test files.") { options[:test_framework] = :testunit }
     opt.on("--rspec", "Use RSpec for test files.") { options[:test_framework] = :rspec }
     opt.on("--shoulda", "Use Shoulda for test files.") { options[:test_framework] = :shoulda }
+    opt.on("--resource_controller", "Use the resource_controller plugin.") { |v| options[:resource_controller] = v }
   end
   
   # is there a better way to do this? Perhaps with const_defined?
