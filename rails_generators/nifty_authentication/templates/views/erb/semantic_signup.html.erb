@@ -1,0 +1,23 @@
+<%% title "Sign up" %>
+
+<p>Already have an account? <%%= link_to "Log in", login_path %>.</p>
+
+<%% semantic_form_for @<%= user_singular_name %> do |f| %>
+  <%% f.inputs do %>
+    <p>
+      <%%= f.input :username %>
+    </p>
+    <p>
+      <%%= f.input :email, :label => "Email Address" %>
+    </p>
+    <p>
+      <%%= f.input :password %>
+    </p>
+    <p>
+      <%%= f.input :password_confirmation, :label => "Confirm Password" %>
+    </p>
+  <%% end %>
+  <%% f.buttons do %>
+    <p><%%= f.commit_button "Sign up" %></p>
+  <%% end %>
+<%% end %>

@@ -1,0 +1,12 @@
+- title "Sign up"
+
+%p== Already have an account? #{link_to "Log in", login_path}.
+
+- semantic_form_for @<%= user_singular_name %> do |f|
+  - f.inputs do
+    %p= f.input :username
+    %p= f.input :email, :label => "Email Address"
+    %p= f.input :password
+    %p= f.input :password_confirmation, :label => "Confirm Password"
+  - f.buttons do
+    %p= f.commit_button "Sign up"
