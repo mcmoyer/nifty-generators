@@ -93,7 +93,7 @@ class NiftyScaffoldGenerator < Rails::Generator::Base
     end
   end
   def resource_controller_prefix
-    "resource_" if options[:resource_controller]
+    "resource_" unless options[:no_resource_controller]
   end
   def form_partial?
     actions? :new, :edit
@@ -133,18 +133,18 @@ class NiftyScaffoldGenerator < Rails::Generator::Base
     end.join("  \n").strip
   end
   def form_partial_name
-    if options[:formtastic]
-      'semantic_form'
-    else
+    if options[:no_formtastic]
       'form'
+    else
+      'semantic_form'
     end
   end
   def render_form
     if form_partial?
-      if options[:haml]
-        "= render :partial => '#{form_partial_name}'"
-      else
+      if options[:erb]
         "<%= render :partial => '#{form_partial_name}' %>"
+      else  
+        "= render :partial => '#{form_partial_name}'"
       end
     else
       read_template("views/#{view_language}/_#{form_partial_name}.html.#{view_language}")
@@ -196,7 +196,7 @@ class NiftyScaffoldGenerator < Rails::Generator::Base
 protected
   
   def view_language
-    options[:haml] ? 'haml' : 'erb'
+    options[:erb] ? 'erb' : 'haml'
   end
   
   def test_framework
@@ -215,12 +215,12 @@ protected
     opt.on("--skip-timestamps", "Don't add timestamps to migration file.") { |v| options[:skip_timestamps] = v }
     opt.on("--skip-controller", "Don't generate controller, helper, or views.") { |v| options[:skip_controller] = v }
     opt.on("--invert", "Generate all controller actions except these mentioned.") { |v| options[:invert] = v }
-    opt.on("--haml", "Generate HAML views instead of ERB.") { |v| options[:haml] = v }
-    opt.on("--formtastic", "Generate formtastic forms instead of normal forms.") { |v| options[:formtastic] = v }
+    opt.on("--erb", "Generate ERB views instead of HAML.") { |v| options[:erb] = v }
+    opt.on("--no-formtastic", "Generate normal forms instead of formtastic forms.") { |v| options[:no_formtastic] = v }
     opt.on("--testunit", "Use test/unit for test files.") { options[:test_framework] = :testunit }
     opt.on("--rspec", "Use RSpec for test files.") { options[:test_framework] = :rspec }
     opt.on("--shoulda", "Use Shoulda for test files.") { options[:test_framework] = :shoulda }
-    opt.on("--resource_controller", "Use the resource_controller plugin.") { |v| options[:resource_controller] = v }
+    opt.on("--no-resource_controller", "Dont Use the resource_controller plugin.") { |v| options[:no_resource_controller] = v }
   end
   
   # is there a better way to do this? Perhaps with const_defined?
