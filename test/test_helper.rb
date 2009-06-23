@@ -83,7 +83,7 @@ module NiftyGenerators
   end
 end
 
-class Thoughtbot::Shoulda::Context
+class Shoulda::Context
   include NiftyGenerators::ShouldaAdditions
 end
 

@@ -52,13 +52,23 @@ class NiftyScaffoldGenerator < Rails::Generator::Base
         if rspec?
           m.directory "spec/models"
           m.template "tests/#{test_framework}/model.rb", "spec/models/#{singular_name}_spec.rb"
-          m.directory "spec/fixtures"
-          m.template "fixtures.yml", "spec/fixtures/#{plural_name}.yml"
+          if options[:factory_girl]
+            m.directory "spec/factories"
+            m.template "factory.rb", "spec/factories/#{singular_name}.rb"
+          else
+            m.directory "spec/fixtures"
+            m.template "fixtures.yml", "spec/fixtures/#{plural_name}.yml"
+          end
         else
           m.directory "test/unit"
           m.template "tests/#{test_framework}/model.rb", "test/unit/#{singular_name}_test.rb"
-          m.directory "test/fixtures"
-          m.template "fixtures.yml", "test/fixtures/#{plural_name}.yml"
+          if options[:factory_girl]
+            m.directory "test/factories"
+            m.template "factory.rb", "test/factories/#{singular_name}.rb"
+          else
+            m.directory "test/fixtures"
+            m.template "fixtures.yml", "test/fixtures/#{plural_name}.yml"
+          end
         end
       end
       
@@ -221,6 +231,7 @@ protected
     opt.on("--rspec", "Use RSpec for test files.") { options[:test_framework] = :rspec }
     opt.on("--shoulda", "Use Shoulda for test files.") { options[:test_framework] = :shoulda }
     opt.on("--no-resource_controller", "Dont Use the resource_controller plugin.") { |v| options[:no_resource_controller] = v }
+    opt.on("--factory_girl", "Generate factory_girl style fixtures instead of yaml.") { |v| options[:factory_girl] = v }
   end
   
   # is there a better way to do this? Perhaps with const_defined?
