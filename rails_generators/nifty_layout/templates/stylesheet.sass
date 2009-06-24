@@ -1,4 +1,7 @@
 !primary_color = #4B7399
+!table_borders = 1px dotted #A9A9A9
+!field_borders = 1px dotted #999
+!field_highlight = #DDD   
 
 body
   :background-color = !primary_color
@@ -65,3 +68,54 @@ a
     li
       :font-size 12px
       :list-style disc
+
+div.form-fields
+  div.row
+    :clear left
+    :margin-top 1em
+    label
+      :float left
+      :width 11em 
+      :text-align right
+      :margin-right 1em
+    textarea
+      :height 6em
+      :width 45em
+    br
+      :clear left
+
+table.index
+  :border-right = !table_borders
+  :border-bottom = !table_borders
+  :border-collapse collapse
+  th
+    :background-color #AFAFAF
+    :padding .5em
+  td
+    :border-left = !table_borders
+    :border-top = !table_borders
+    :padding .5em
+
+.display-fields
+  label
+    :display block
+    :width 11em
+    :float left
+    :text-align right
+  div.row
+    :clear left
+    :margin-top 1em 
+    div 
+      :background-color = !field_highlight
+      :border = !field_borders
+      :margin .2em 0 .2em 12em
+      :padding .2em
+      :width 30em
+      :font
+        :size 12px
+      p 
+        :margin 0
+    br
+      :clear left
+      :line-height 0
+
